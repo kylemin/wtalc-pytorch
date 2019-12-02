@@ -30,13 +30,13 @@ def filter_segments(segment_predict, videonames, ambilist, factor):
 
 def getLocMAP(predictions, th, annotation_path, args):
 
-   gtsegments = np.load(annotation_path + '/segments.npy')
-   gtlabels = np.load(annotation_path + '/labels.npy')
-   gtlabels = np.load(annotation_path + '/labels.npy')
-   videoname = np.load(annotation_path + '/videoname.npy'); videoname = np.array([v.decode('utf-8') for v in videoname])
-   subset = np.load(annotation_path + '/subset.npy'); subset = np.array([s.decode('utf-8') for s in subset])
-   classlist = np.load(annotation_path + '/classlist.npy'); classlist = np.array([c.decode('utf-8') for c in classlist])
-   duration = np.load(annotation_path + '/duration.npy')
+   gtsegments = np.load(annotation_path + '/segments.npy', allow_pickle=True)
+   gtlabels = np.load(annotation_path + '/labels.npy', allow_pickle=True)
+   gtlabels = np.load(annotation_path + '/labels.npy', allow_pickle=True)
+   videoname = np.load(annotation_path + '/videoname.npy', allow_pickle=True); videoname = np.array([v.decode('utf-8') for v in videoname])
+   subset = np.load(annotation_path + '/subset.npy', allow_pickle=True); subset = np.array([s.decode('utf-8') for s in subset])
+   classlist = np.load(annotation_path + '/classlist.npy', allow_pickle=True); classlist = np.array([c.decode('utf-8') for c in classlist])
+   duration = np.load(annotation_path + '/duration.npy', allow_pickle=True)
    ambilist = annotation_path + '/Ambiguous_test.txt'
    if args.feature_type == 'UNT':
       factor = 10.0/4.0
@@ -161,7 +161,7 @@ def getLocMAP(predictions, th, annotation_path, args):
   
 
 def getDetectionMAP(predictions, annotation_path, args):
-   iou_list = [0.1, 0.2, 0.3, 0.4, 0.5]
+   iou_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
    dmap_list = []
    for iou in iou_list:
       print('Testing for IoU %f' %iou)

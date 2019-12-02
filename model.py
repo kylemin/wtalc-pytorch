@@ -17,7 +17,6 @@ class Model(torch.nn.Module):
         super(Model, self).__init__()
 
         self.fc = nn.Linear(n_feature, n_feature)
-        self.fc1 = nn.Linear(n_feature, n_feature)
         self.classifier = nn.Linear(n_feature, n_class)
         self.dropout = nn.Dropout(0.7)
 

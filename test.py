@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from model import Model
 from video_dataset import Dataset
-from tensorboard_logger import log_value
+#from tensorboard_logger import log_value
 import utils
 import numpy as np
 from torch.autograd import Variable
@@ -13,7 +13,6 @@ import scipy.io as sio
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 def test(itr, dataset, args, model, logger, device):
-    
     done = False
     instance_logits_stack = []
     element_logits_stack = []
@@ -38,12 +37,12 @@ def test(itr, dataset, args, model, logger, device):
     labels_stack = np.array(labels_stack)
 
     dmap, iou = dmAP(element_logits_stack, dataset.path_to_annotations, args)
-    
-    if args.dataset_name == 'Thumos14':
-        test_set = sio.loadmat('test_set_meta.mat')['test_videos'][0]
-        for i in range(np.shape(labels_stack)[0]):
-            if test_set[i]['background_video'] == 'YES':
-                labels_stack[i,:] = np.zeros_like(labels_stack[i,:])
+
+    #if args.dataset_name == 'Thumos14':
+    #    test_set = sio.loadmat('test_set_meta.mat')['test_videos'][0]
+    #    for i in range(np.shape(labels_stack)[0]):
+    #        if test_set[i]['background_video'] == 'YES':
+    #            labels_stack[i,:] = np.zeros_like(labels_stack[i,:])
 
     cmap = cmAP(instance_logits_stack, labels_stack)
     print('Classification map %f' %cmap)
@@ -52,10 +51,12 @@ def test(itr, dataset, args, model, logger, device):
     print('Detection map @ %f = %f' %(iou[2], dmap[2]))
     print('Detection map @ %f = %f' %(iou[3], dmap[3]))
     print('Detection map @ %f = %f' %(iou[4], dmap[4]))
-        
-    logger.log_value('Test Classification mAP', cmap, itr)
-    for item in list(zip(dmap,iou)):
-    	logger.log_value('Test Detection mAP @ IoU = ' + str(item[1]), item[0], itr)
+    print('Detection map @ %f = %f' %(iou[5], dmap[5]))
+    print('Detection map @ %f = %f' %(iou[6], dmap[6]), flush=True)
 
-    utils.write_to_file(args.dataset_name, dmap, cmap, itr)
+    logger.scalar_summary('test/c_mAP', cmap, step=itr)
+    for item in list(zip(dmap,iou)):
+        logger.scalar_summary('test/d_mAP @ %s'%str(item[1]), item[0], step=itr)
+
+    #utils.write_to_file(args.dataset_name, dmap, cmap, itr)
 

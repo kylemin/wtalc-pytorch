@@ -10,11 +10,11 @@ class Dataset():
         self.feature_size = args.feature_size
         self.path_to_features = '%s-%s-JOINTFeatures.npy' %(args.dataset_name, args.feature_type)
         self.path_to_annotations = self.dataset_name + '-Annotations/'
-        self.features = np.load(self.path_to_features, encoding='bytes')
-        self.segments = np.load(self.path_to_annotations + 'segments.npy')
-        self.labels = np.load(self.path_to_annotations + 'labels_all.npy')     # Specific to Thumos14
-        self.classlist = np.load(self.path_to_annotations + 'classlist.npy')
-        self.subset = np.load(self.path_to_annotations + 'subset.npy')
+        self.features = np.load(self.path_to_features, encoding='bytes', allow_pickle=True)
+        self.segments = np.load(self.path_to_annotations + 'segments.npy', allow_pickle=True)
+        self.labels = np.load(self.path_to_annotations + 'labels_all.npy', allow_pickle=True)     # Specific to Thumos14
+        self.classlist = np.load(self.path_to_annotations + 'classlist.npy', allow_pickle=True)
+        self.subset = np.load(self.path_to_annotations + 'subset.npy', allow_pickle=True)
         self.batch_size = args.batch_size
         self.t_max = args.max_seqlen
         self.trainidx = []

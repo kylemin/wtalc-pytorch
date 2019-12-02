@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from model import Model
 from video_dataset import Dataset
-from tensorboard_logger import log_value
+#from tensorboard_logger import log_value
 import utils
 import numpy as np
 from torch.autograd import Variable
@@ -67,17 +67,17 @@ def train(itr, dataset, args, model, optimizer, logger, device):
     labels = torch.from_numpy(labels).float().to(device)
 
     final_features, element_logits = model(Variable(features))
-        
+
     milloss = MILL(element_logits, seq_len, args.batch_size, labels, device)
     casloss = CASL(final_features, element_logits, seq_len, args.num_similar, labels, device)
 
     total_loss = args.Lambda * milloss + (1-args.Lambda) * casloss
-        
-    logger.log_value('milloss', milloss, itr)
-    logger.log_value('casloss', casloss, itr)
-    logger.log_value('total_loss', total_loss, itr)
 
-    print('Iteration: %d, Loss: %.3f' %(itr, total_loss.data.cpu().numpy()))
+    logger.scalar_summary('train/milloss', milloss, step=itr)
+    logger.scalar_summary('train/casloss', casloss, step=itr)
+    logger.scalar_summary('train/totloss', total_loss, step=itr)
+
+    print('Iteration: %d, Loss: %.3f' %(itr, total_loss.data.cpu().numpy()), flush=True)
 
     optimizer.zero_grad()
     total_loss.backward()
