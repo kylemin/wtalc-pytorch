@@ -52,7 +52,7 @@ def getLocMAP(predictions, th, annotation_path, args):
       if subset[i]=='validation' and len(gtsegments[i]):
          gtltr.append(gtlabels[i])
    gtlabelstr = gtltr
-   
+
    # Keep only the test subset annotations
    gts, gtl, vn, dn = [], [], [], []
    for i, s in enumerate(subset):

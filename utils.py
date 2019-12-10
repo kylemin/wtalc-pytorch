@@ -19,6 +19,11 @@ def random_extract(feat, t_max):
 def pad(feat, min_len):
     if np.shape(feat)[0] <= min_len:
        return np.pad(feat, ((0,min_len-np.shape(feat)[0]), (0,0)), mode='constant', constant_values=0)
+       #snp_idx = list(range(np.shape(feat)[0]))*100
+       #start_idx = 0
+       #start_idx = np.random.randint(np.shape(feat)[0])
+       #snp_idx = snp_idx[start_idx:start_idx+min_len]
+       #return feat[snp_idx]
     else:
        return feat
 

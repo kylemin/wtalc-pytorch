@@ -6,7 +6,8 @@ from model import Model
 from video_dataset import Dataset
 from test import test
 from train import train
-from logger import Logger
+#from logger import Logger
+from torch.utils.tensorboard import SummaryWriter as Logger
 import options
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 import torch.optim as optim
@@ -52,4 +53,4 @@ if __name__ == '__main__':
        train(itr, dataset, args, model, optimizer, logger, device)
        if itr % 500 == 0:
           torch.save(model.state_dict(), './ckpt/' + exp_name + '/%s_%06d.pt' % (exp_name, itr))
-          test(itr, dataset, args, model, logger, device)
+          test(itr, dataset, args, model, logger, device, exp_name)

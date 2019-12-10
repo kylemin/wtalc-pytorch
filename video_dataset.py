@@ -12,7 +12,7 @@ class Dataset():
         self.path_to_annotations = self.dataset_name + '-Annotations/'
         self.features = np.load(self.path_to_features, encoding='bytes', allow_pickle=True)
         self.segments = np.load(self.path_to_annotations + 'segments.npy', allow_pickle=True)
-        self.labels = np.load(self.path_to_annotations + 'labels_all.npy', allow_pickle=True)     # Specific to Thumos14
+        self.labels = np.load(self.path_to_annotations + 'labels.npy', allow_pickle=True)
         self.classlist = np.load(self.path_to_annotations + 'classlist.npy', allow_pickle=True)
         self.subset = np.load(self.path_to_annotations + 'subset.npy', allow_pickle=True)
         self.batch_size = args.batch_size
@@ -21,7 +21,7 @@ class Dataset():
         self.testidx = []
         self.classwiseidx = []
         self.currenttestidx = 0
-        self.labels_multihot = [utils.strlist2multihot(labs,self.classlist) for labs in self.labels]
+        self.labels_multihot = [utils.strlist2multihot(list(set(labs)),self.classlist) for labs in self.labels]
 
         self.train_test_idx()
         self.classwise_feature_mapping()
